@@ -1,5 +1,5 @@
 {
-  "name": "ngx-word-pullup",
+  "name": "@omnedia/ngx-word-pullup",
   "version": "1.0.0",
   "description": "A simple typewriter effect to animate text.",
   "peerDependencies": {
