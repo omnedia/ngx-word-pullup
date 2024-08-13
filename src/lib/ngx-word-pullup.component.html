@@ -1,0 +1,9 @@
+<div class="om-word-pullup" [ngClass]="styleClass">
+  <p>
+    @for (word of templateWords; track $index) {
+    <span [@wordPullUp]>
+      {{ word }}
+    </span>
+    }
+  </p>
+</div>

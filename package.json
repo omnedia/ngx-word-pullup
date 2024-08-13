@@ -1,6 +1,7 @@
 {
   "name": "ngx-word-pullup",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "A simple typewriter effect to animate text.",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0"
@@ -8,5 +9,18 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "keywords": [
+    "rxjs",
+    "npm",
+    "words",
+    "text",
+    "pullup",
+    "animation"
+  ],
+  "repository": {
+    "url": "https://github.com/omnedia/ngx-word-pullup"
+  },
+  "author": "Markus Block (markus.block@omnedia.com)",
+  "license": "MIT"
 }

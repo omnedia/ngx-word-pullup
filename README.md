@@ -1,24 +1,85 @@
-# NgxWordPullup
+# ngx-word-pullup
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
+`@omnedia/ngx-word-pullup` is an Angular library that provides a smooth pull-up animation effect for words within Angular applications. This component is designed to sequentially pull up and reveal words with a customizable delay.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name --project ngx-word-pullup` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-word-pullup`.
-> Note: Don't forget to add `--project ngx-word-pullup` or else it will be added to the default project in your `angular.json` file. 
+- Pull-up animation for displaying words sequentially.
+- Fully customizable animation speed and style.
+- Lightweight and easy to integrate as a standalone component.
 
-## Build
+## Installation
 
-Run `ng build ngx-word-pullup` to build the project. The build artifacts will be stored in the `dist/` directory.
+Install the library using npm:
 
-## Publishing
+```bash
+npm install @omnedia/ngx-word-pullup
+```
 
-After building your library with `ng build ngx-word-pullup`, go to the dist folder `cd dist/ngx-word-pullup` and run `npm publish`.
+## Usage
 
-## Running unit tests
+Import the `NgxWordPullupComponent` in your Angular module or component:
 
-Run `ng test ngx-word-pullup` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+import { NgxWordPullupComponent } from '@omnedia/ngx-word-pullup';
 
-## Further help
+@Component({
+  ...
+  imports: [
+    ...
+    NgxWordPullupComponent,
+  ],
+  ...
+})
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Use the component in your template:
+
+```html
+<om-word-pullup [words]="['Welcome', 'to', 'our', 'website!']" [wordDelay]="300"></om-word-pullup>
+```
+
+## API
+
+```html
+<om-word-pullup
+  [words]="words"
+  [wordDelay]="wordDelay"
+  styleClass="your-custom-class"
+></om-word-pullup>
+```
+
+- `words`: An array of strings or a single string to be animated. If a single string is provided, it will be split into individual words.
+- `wordDelay`: (optional) The delay between the appearance of each word in milliseconds. Minimum value is 100 ms. Default is 200 ms.
+- `styleClass`: (optional) A custom CSS class to apply to the component's wrapper element.
+
+## Example
+
+```html
+<om-word-pullup
+  [words]="'This is an example sentence'"
+  [wordDelay]="150"
+  styleClass="example-class"
+></om-word-pullup>
+```
+
+This will animate each word of the sentence with a 150ms delay between them.
+
+## Styling
+
+To customize the appearance of the words or the container, use the styleClass input to apply your own CSS classes.
+
+```css
+.example-class {
+  font-size: 24px;
+  color: #333;
+}
+```
+
+## Contributing
+
+Contributions are welcome. Please submit a pull request or open an issue to discuss your ideas.
+
+## License
+
+This project is licensed under the MIT License.
