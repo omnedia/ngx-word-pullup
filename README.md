@@ -1,5 +1,13 @@
 # ngx-word-pullup
 
+<a href="https://ngxui.com" target="_blank" style="display: flex;gap: .5rem;align-items: center;cursor: pointer; padding: 0 0 0 0; height: fit-content;">
+  <img src="https://ngxui.com/assets/img/ngxui-logo.png" style="width: 64px;height: 64px;">
+  <p style="font-weight: bold; padding: 0; margin: 0; font-size: 4rem">NGXUI</p>
+</a>
+
+This Library is part of the NGXUI ecosystem. <br>
+View all available components at https://ngxui.com
+
 `@omnedia/ngx-word-pullup` is an Angular library that provides a smooth pull-up animation effect for words within Angular applications. This component is designed to sequentially pull up and reveal words with a customizable delay.
 
 ## Features
@@ -21,27 +29,30 @@ npm install @omnedia/ngx-word-pullup
 Import the `NgxWordPullupComponent` in your Angular module or component:
 
 ```typescript
-import { NgxWordPullupComponent } from '@omnedia/ngx-word-pullup';
+import {NgxWordPullupComponent} from '@omnedia/ngx-word-pullup';
 
 @Component({
   ...
-  imports: [
-    ...
-    NgxWordPullupComponent,
-  ],
+    imports:
+[
   ...
+    NgxWordPullupComponent,
+],
+...
 })
 ```
 
 Use the component in your template:
 
 ```html
+
 <om-word-pullup [words]="['Welcome', 'to', 'our', 'website!']" [wordDelay]="300"></om-word-pullup>
 ```
 
 ## API
 
 ```html
+
 <om-word-pullup
   [words]="words"
   [wordDelay]="wordDelay"
@@ -56,6 +67,7 @@ Use the component in your template:
 ## Example
 
 ```html
+
 <om-word-pullup
   [words]="'This is an example sentence'"
   [wordDelay]="150"
