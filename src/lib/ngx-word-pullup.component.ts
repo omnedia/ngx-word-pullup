@@ -26,7 +26,6 @@ export class NgxWordPullupComponent implements AfterViewInit, OnDestroy {
   @ViewChild("OmWordPullupWrapper") wordPullupRef!: ElementRef<HTMLElement>;
   @ViewChildren('wordElements') wordElements!: QueryList<ElementRef<HTMLElement>>;
 
-
   @Input("words")
   set words(words: string[] | string) {
     if (typeof words === "string") {
