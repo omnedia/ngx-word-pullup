@@ -1,7 +1,18 @@
-import { animate, style, transition, trigger } from "@angular/animations";
-import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
-import { concat, concatMap, delay, from, Observable, of } from "rxjs";
+import {CommonModule, isPlatformBrowser} from "@angular/common";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  PLATFORM_ID,
+  QueryList,
+  signal,
+  ViewChild,
+  ViewChildren
+} from "@angular/core";
 
 @Component({
   selector: "om-word-pullup",
@@ -9,66 +20,107 @@ import { concat, concatMap, delay, from, Observable, of } from "rxjs";
   imports: [CommonModule],
   templateUrl: "./ngx-word-pullup.component.html",
   styleUrl: "./ngx-word-pullup.component.scss",
-  animations: [
-    trigger("wordPullUp", [
-      transition(":enter", [
-        style({ transform: "translateY(100%)", opacity: 0 }),
-        animate(
-          "0.2s ease-in",
-          style({ transform: "translateY(0)", opacity: 1 })
-        ),
-      ]),
-    ]),
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgxWordPullupComponent implements OnInit {
+export class NgxWordPullupComponent implements AfterViewInit, OnDestroy {
+  @ViewChild("OmWordPullupWrapper") wordPullupRef!: ElementRef<HTMLElement>;
+  @ViewChildren('wordElements') wordElements!: QueryList<ElementRef<HTMLElement>>;
+
+
   @Input("words")
   set words(words: string[] | string) {
     if (typeof words === "string") {
       words = words.split(" ");
     }
 
-    this.pullupWords = words;
+    this.pullupWords.set(words);
   }
 
   @Input("styleClass")
   styleClass?: string;
 
-  @Input("wordDelay")
-  set wordDelay(wordDelay: number) {
-    if (wordDelay < 100) {
-      this.wordDelaySpeed = 100;
-      return;
-    }
+  @Input("animateOnView")
+  animateOnView = false;
 
-    this.wordDelaySpeed = wordDelay;
+  @Input("direction")
+  direction: 'up' | 'down' = 'up';
+
+  @Input("pullupSpeed")
+  set pullupSpeed(pullupSpeed: string) {
+    this.style.update(prev => ({...prev, '--om-pullup-speed': pullupSpeed}));
   }
 
-  private wordDelaySpeed: number = 200;
+  @Input("wordDelay")
+  set wordDelay(wordDelay: number) {
+    if (wordDelay < 0) {
+      wordDelay = 0;
+    }
 
-  pullupWords: string[] = [];
-  templateWords: string[] = [];
+    this.wordDelaySpeed.set(wordDelay);
+  }
 
-  ngOnInit(): void {
-    if (this.pullupWords.length <= 0) {
+  wordDelaySpeed = signal(100);
+
+  pullupWords = signal<string[]>([]);
+
+  isInView = signal(false);
+  private intersectionObserver?: IntersectionObserver;
+  private animatedOnce = false;
+
+  style = signal({})
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+  }
+
+  ngAfterViewInit(): void {
+    if (this.pullupWords().length <= 0) {
       throw new Error(
         '"om-word-pullup: No words were passed to the component!"'
       );
     }
 
-    this.startAnimation();
+    if (isPlatformBrowser(this.platformId)) {
+      this.intersectionObserver = new IntersectionObserver(([entry]) => {
+        const wasInView = this.isInView();
+        this.isInView.set(entry.isIntersecting);
+
+        if (!wasInView && this.isInView() && this.animateOnView || !this.animatedOnce && this.isInView()) {
+          this.startAnimation();
+        }
+
+        if (this.animateOnView && !this.isInView()) {
+          this.resetAnimation();
+        }
+      });
+      this.intersectionObserver.observe(this.wordPullupRef.nativeElement);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
   }
 
   private startAnimation(): void {
-    from(this.pullupWords)
-      .pipe(concatMap((word) => this.pushWord(word)))
-      .subscribe();
+    this.animatedOnce = true;
+
+    this.wordElements.forEach((el, i) => {
+      const nativeEl = el.nativeElement;
+      nativeEl.classList.remove('animate');
+
+      void nativeEl.offsetWidth;
+      nativeEl.style.animationDelay = `${i * this.wordDelaySpeed()}ms`;
+      nativeEl.classList.add('animate');
+    });
   }
 
-  private pushWord(word: string): Observable<number | string> {
-    return concat(
-      of(this.templateWords.push(word)),
-      of("").pipe(delay(this.wordDelaySpeed))
-    );
+  private resetAnimation(): void {
+    this.wordElements.forEach((el) => {
+      const nativeEl = el.nativeElement;
+      nativeEl.classList.remove('animate');
+    });
   }
 }

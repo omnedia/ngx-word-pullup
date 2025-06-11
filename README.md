@@ -55,12 +55,18 @@ Use the component in your template:
 <om-word-pullup
   [words]="words"
   [wordDelay]="wordDelay"
+  [animateOnView]="animateOnView"
+  [direction]="direction"
+  [pullupSpeed]="pullupSpeed"
   styleClass="your-custom-class"
 ></om-word-pullup>
 ```
 
 - `words`: An array of strings or a single string to be animated. If a single string is provided, it will be split into individual words.
-- `wordDelay`: (optional) The delay between the appearance of each word in milliseconds. Minimum value is 100 ms. Default is 200 ms.
+- `wordDelay`: (optional) The delay between the appearance of each word in milliseconds. Minimum value is 0 ms. Default is 100 ms.
+- `animateOnView`: (optional) If the animation should play everytime the element gets into the view. Default is false.
+- `direction`: (optional) The direction in wich the animation moves. Default is up.
+- `pullupSpeed`: (optional) The speed of the pullup animation. Default is 0.5s.
 - `styleClass`: (optional) A custom CSS class to apply to the component's wrapper element.
 
 ## Example
@@ -70,6 +76,9 @@ Use the component in your template:
 <om-word-pullup
   [words]="'This is an example sentence'"
   [wordDelay]="150"
+  [animateOnView]="true"
+  [pullupSpeed]="'0.8s'"
+  direction="down"
   styleClass="example-class"
 ></om-word-pullup>
 ```

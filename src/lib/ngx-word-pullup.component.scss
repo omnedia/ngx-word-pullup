@@ -1,4 +1,6 @@
 .om-word-pullup {
+  --om-pullup-speed: 0.5s;
+
   width: fit-content;
   height: fit-content;
 
@@ -12,6 +14,52 @@
 
     span {
       display: inline-block;
+      opacity: 0;
+      filter: blur(5px);
+
+      &.direction-up {
+        transform: translateY(100%);
+
+        &.animate {
+          animation: om-pullup var(--om-pullup-speed) ease-in forwards;
+        }
+      }
+
+      &.direction-down {
+        transform: translateY(-100%);
+
+        &.animate {
+          animation: om-pulldown var(--om-pullup-speed) ease-in forwards;
+        }
+      }
     }
+  }
+}
+
+@keyframes om-pullup {
+  60% {
+    transform: translateY(-10%);
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes om-pulldown {
+  60% {
+    transform: translateY(10%);
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0);
   }
 }

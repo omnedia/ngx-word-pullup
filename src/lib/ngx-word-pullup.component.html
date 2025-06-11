@@ -1,9 +1,15 @@
-<div class="om-word-pullup" [ngClass]="styleClass">
+<div class="om-word-pullup" [ngClass]="styleClass" [ngStyle]="style()" #OmWordPullupWrapper>
   <p>
-    @for (word of templateWords; track $index) {
-    <span [@wordPullUp]>
-      {{ word }}
-    </span>
+    @for (word of pullupWords(); track $index) {
+      <span
+        class="word"
+        [class.direction-up]="direction === 'up'"
+        [class.direction-down]="direction === 'down'"
+        #wordElements
+      >
+        {{ word }}
+      </span>
     }
   </p>
 </div>
+
